@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Aprende Windows Forms con C#</title>
+<style>
+:root{--sky1:#bfeaff;--sky2:#e9fbff;--ink:#0d3b57;--card:rgba(255,255,255,.72);--code:#0b2f47;--codetx:#d8f4ff;--bd:rgba(255,255,255,.9);--deep:#0a5c8a;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--sky1:#0d4a73;--sky2:#0a2c4a;--ink:#e3f6ff;--card:rgba(20,70,105,.6);--bd:rgba(150,220,255,.4);--deep:#7fdcff}}
+:root[data-theme="dark"]{--sky1:#0d4a73;--sky2:#0a2c4a;--ink:#e3f6ff;--card:rgba(20,70,105,.6);--bd:rgba(150,220,255,.4);--deep:#7fdcff}
+html{scroll-padding-top:calc(env(safe-area-inset-top,0px) + 70px);scroll-behavior:smooth}
+*{box-sizing:border-box}
+body{margin:0;font-family:"Segoe UI","Frutiger","Trebuchet MS",Arial,sans-serif;color:var(--ink);line-height:1.6;background:linear-gradient(180deg,var(--sky1) 0%,var(--sky2) 55%,#c9f2b4 100%) fixed;min-height:100vh;overflow-x:hidden}
+.bubble{position:fixed;border-radius:50%;background:radial-gradient(circle at 30% 30%,rgba(255,255,255,.95),rgba(255,255,255,.15) 60%,rgba(120,210,255,.25));border:1px solid rgba(255,255,255,.7);pointer-events:none;z-index:0}
+.b1{width:160px;height:160px;top:8%;left:-40px}.b2{width:90px;height:90px;top:40%;right:4%}.b3{width:220px;height:220px;bottom:-60px;left:30%}
+nav{position:sticky;top:env(safe-area-inset-top,0px);z-index:10;display:flex;gap:6px;flex-wrap:wrap;justify-content:center;padding:10px;background:linear-gradient(180deg,rgba(255,255,255,.85),rgba(190,235,255,.75));backdrop-filter:blur(8px);border-bottom:1px solid var(--bd);box-shadow:0 4px 14px rgba(10,92,138,.18)}
+nav a{color:#0a5c8a;text-decoration:none;font-weight:600;font-size:.85rem;padding:5px 12px;border-radius:99px;background:linear-gradient(180deg,#fff,#d6f2ff);border:1px solid #9edcf5;box-shadow:inset 0 1px 0 #fff}
+nav a:hover{background:linear-gradient(180deg,#eaffd9,#9be879)}
+header{position:relative;z-index:1;text-align:center;padding:50px 18px 30px}
+h1{font-size:clamp(2rem,6vw,3.6rem);margin:0;color:var(--deep);text-shadow:0 2px 0 #fff,0 6px 18px rgba(25,181,232,.45)}
+header p{max-width:640px;margin:12px auto 20px;font-size:1.1rem}
+.btn{display:inline-block;padding:12px 28px;border-radius:99px;color:#fff;font-weight:700;text-decoration:none;background:linear-gradient(180deg,#6fdcff 0%,#19b5e8 50%,#0a8fc4 51%,#27c0f0 100%);border:1px solid #0a7fb0;box-shadow:0 6px 14px rgba(10,143,196,.45),inset 0 2px 0 rgba(255,255,255,.7);text-shadow:0 1px 1px rgba(0,0,0,.3);cursor:pointer;font-size:1rem;font-family:inherit}
+.btn.green{background:linear-gradient(180deg,#b6f58f 0%,#6fd33f 50%,#4cb82a 51%,#7ee253 100%);border-color:#3a9a1f}
+main{position:relative;z-index:1;max-width:920px;margin:0 auto;padding:0 16px 60px}
+section{background:var(--card);border:1px solid var(--bd);border-radius:24px;padding:24px;margin:22px 0;box-shadow:0 10px 30px rgba(10,92,138,.18),inset 0 2px 0 rgba(255,255,255,.8);backdrop-filter:blur(6px)}
+h2{margin:0 0 10px;font-size:1.6rem;color:var(--deep)}
+h2 span{display:inline-grid;place-items:center;width:38px;height:38px;margin-right:8px;border-radius:50%;background:linear-gradient(180deg,#b6f58f,#4cb82a);color:#fff;font-size:1rem;box-shadow:inset 0 2px 0 rgba(255,255,255,.7),0 3px 8px rgba(60,150,30,.4)}
+h3{color:var(--deep);margin:18px 0 6px}
+pre{background:var(--code);color:var(--codetx);padding:14px;border-radius:14px;overflow-x:auto;font:.85rem/1.5 Consolas,"Courier New",monospace;border:2px solid #19b5e8;max-width:100%}
+code{font-family:Consolas,monospace;background:rgba(25,181,232,.18);padding:1px 6px;border-radius:6px}
+pre code{background:none;padding:0}
+.k{color:#7fe3ff}.s{color:#b6f58f}.c{color:#8fb6c9}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px}
+.mini{background:linear-gradient(180deg,rgba(255,255,255,.92),rgba(205,242,255,.75));color:#0d3b57;border:1px solid #a7e1f7;border-radius:16px;padding:12px}
+.mini b{color:#0a5c8a}
+.tip{border-left:6px solid #6fd33f;background:rgba(182,245,143,.35);padding:10px 14px;border-radius:12px;margin:12px 0}
+.warn{border-left-color:#f5b400;background:rgba(255,226,120,.4)}
+table{width:100%;border-collapse:collapse;display:block;overflow-x:auto}
+th,td{padding:8px 12px;border-bottom:1px solid rgba(25,181,232,.35);text-align:left;white-space:nowrap}
+th{background:linear-gradient(180deg,#6fdcff,#19b5e8);color:#fff}
+.demo{background:linear-gradient(180deg,#fff,#dff4ff);color:#0d3b57;border:1px solid #7cc9ea;border-radius:10px;box-shadow:0 8px 20px rgba(10,92,138,.3);max-width:380px;margin:12px auto;overflow:hidden}
+.demo .bar{background:linear-gradient(180deg,#8fe0ff,#2fb4e6);color:#fff;padding:6px 10px;font-weight:600;display:flex;justify-content:space-between}
+.demo .body{padding:14px;display:flex;flex-direction:column;gap:8px}
+.demo input,.demo select{padding:7px;border:1px solid #7cc9ea;border-radius:6px;font:inherit}
+.out{font-weight:700;color:#0a8fc4;min-height:1.5em}
+details{background:rgba(255,255,255,.6);color:#0d3b57;border:1px solid #a7e1f7;border-radius:14px;padding:10px 14px;margin:8px 0}
+summary{cursor:pointer;font-weight:700;color:#0a5c8a}
+footer{text-align:center;padding:20px;position:relative;z-index:1}
+</style>
+</head>
+<body>
+<div class="bubble b1"></div><div class="bubble b2"></div><div class="bubble b3"></div>
+<nav>
+<a href="#que">¿Qué es?</a><a href="#setup">Instalar</a><a href="#primer">1er programa</a><a href="#controles">Controles</a><a href="#eventos">Eventos</a><a href="#datos">Variables</a><a href="#control">Decisiones</a><a href="#proyecto">Proyecto</a><a href="#errores">Errores</a><a href="#quiz">Quiz</a>
+</nav>
+<header>
+<h1>🪟 Aprende Windows Forms con C#</h1>
+<p>Crea tus propias ventanas, botones y aplicaciones de escritorio paso a paso. ¡Sin miedo y con ejemplos reales!</p>
+<a class="btn" href="#que">Empezar ahora</a>
+</header>
+<main>
+
+<section id="que">
+<h2><span>1</span>¿Qué es Windows Forms?</h2>
+<p><b>Windows Forms (WinForms)</b> es una herramienta de Microsoft para crear <b>aplicaciones de escritorio</b> con ventanas: calculadoras, juegos sencillos, sistemas de inventario, etc. Se programa con <b>C#</b> (se lee "si sharp") dentro de <b>Visual Studio</b>.</p>
+<div class="grid">
+<div class="mini"><b>🎨 Diseñador visual</b><br>Arrastras botones y cajas de texto como si fuera Paint.</div>
+<div class="mini"><b>⌨️ Código C#</b><br>Escribes qué debe pasar cuando el usuario hace clic.</div>
+<div class="mini"><b>⚙️ .NET</b><br>La plataforma que ejecuta tu app. Hoy se usa .NET 8 o superior.</div>
+</div>
+<div class="tip">💡 <b>Analogía:</b> el diseñador es la <i>fachada</i> de una casa; el código C# es la <i>electricidad</i> que hace funcionar todo.</div>
+<h3>Conceptos clave</h3>
+<table><tr><th>Término</th><th>Significado</th></tr>
+<tr><td>Form</td><td>La ventana de tu programa</td></tr>
+<tr><td>Control</td><td>Cualquier elemento: botón, texto, lista…</td></tr>
+<tr><td>Propiedad</td><td>Una característica (color, texto, tamaño)</td></tr>
+<tr><td>Método</td><td>Una acción que el objeto puede hacer</td></tr>
+<tr><td>Evento</td><td>Algo que ocurre (clic, tecla, cargar ventana)</td></tr></table>
+</section>
+
+<section id="setup">
+<h2><span>2</span>Prepara tu entorno</h2>
+<ol>
+<li>Descarga <b>Visual Studio Community</b> (gratis) desde el sitio oficial de Microsoft.</li>
+<li>Durante la instalación marca la carga de trabajo <b>"Desarrollo de escritorio de .NET"</b>.</li>
+<li>Abre Visual Studio → <b>Crear un proyecto nuevo</b>.</li>
+<li>Elige <b>Aplicación de Windows Forms</b> (C#) → ponle nombre → <b>Crear</b>.</li>
+</ol>
+<h3>Las 3 ventanas que debes conocer</h3>
+<div class="grid">
+<div class="mini"><b>Cuadro de herramientas</b><br>Lista de controles para arrastrar.</div>
+<div class="mini"><b>Diseñador (Form1)</b><br>Donde dibujas tu ventana.</div>
+<div class="mini"><b>Propiedades</b><br>Cambias nombre, color, texto… (atajo F4).</div>
+</div>
+<div class="tip">⌨️ <b>F7</b> pasa del diseñador al código · <b>Shift+F7</b> vuelve al diseñador · <b>F5</b> ejecuta tu programa.</div>
+</section>
+
+<section id="primer">
+<h2><span>3</span>Tu primer programa: "Hola Mundo"</h2>
+<p>Arrastra un <b>Button</b> y un <b>Label</b> al formulario. Haz <b>doble clic</b> en el botón y escribe:</p>
+<pre><code><span class="k">private void</span> btnSaludar_Click(<span class="k">object</span> sender, EventArgs e)
+{
+    lblMensaje.Text = <span class="s">"¡Hola Mundo!"</span>;
+}</code></pre>
+<p>Pruébalo aquí (simulación):</p>
+<div class="demo"><div class="bar"><span>Form1</span><span>– □ ✕</span></div>
+<div class="body"><div class="out" id="hola"></div><button class="btn" onclick="document.getElementById('hola').textContent='¡Hola Mundo!'">btnSaludar</button></div></div>
+<h3>¿Qué pasó?</h3>
+<p>Al hacer clic se disparó el <b>evento Click</b>; el método cambió la propiedad <code>Text</code> del label. Eso es programar con WinForms: <b>evento → acción → resultado visible</b>.</p>
+<h3>Estructura de un proyecto</h3>
+<table><tr><th>Archivo</th><th>Para qué sirve</th></tr>
+<tr><td>Form1.cs</td><td>Tu código (lo que tú escribes)</td></tr>
+<tr><td>Form1.Designer.cs</td><td>Código generado por el diseñador (no lo edites)</td></tr>
+<tr><td>Program.cs</td><td>Punto de entrada: inicia la aplicación</td></tr></table>
+</section>
+
+<section id="controles">
+<h2><span>4</span>Los controles más usados</h2>
+<table><tr><th>Control</th><th>Uso</th><th>Propiedad clave</th></tr>
+<tr><td>Label</td><td>Mostrar texto</td><td>Text</td></tr>
+<tr><td>Button</td><td>Ejecutar acciones</td><td>Text, Enabled</td></tr>
+<tr><td>TextBox</td><td>Escribir datos</td><td>Text, PasswordChar</td></tr>
+<tr><td>CheckBox</td><td>Sí / No</td><td>Checked</td></tr>
+<tr><td>RadioButton</td><td>Elegir una opción</td><td>Checked</td></tr>
+<tr><td>ComboBox</td><td>Lista desplegable</td><td>SelectedItem</td></tr>
+<tr><td>ListBox</td><td>Lista de elementos</td><td>Items</td></tr>
+<tr><td>PictureBox</td><td>Mostrar imágenes</td><td>Image, SizeMode</td></tr>
+<tr><td>NumericUpDown</td><td>Números con flechas</td><td>Value</td></tr>
+<tr><td>Timer</td><td>Acción cada cierto tiempo</td><td>Interval</td></tr>
+<tr><td>DataGridView</td><td>Tablas de datos</td><td>DataSource</td></tr></table>
+<h3>Propiedades que usarás siempre</h3>
+<pre><code>textBox1.Text = <span class="s">"Hola"</span>;         <span class="c">// contenido</span>
+button1.Enabled = <span class="k">false</span>;        <span class="c">// desactivar</span>
+label1.Visible = <span class="k">true</span>;          <span class="c">// mostrar/ocultar</span>
+label1.ForeColor = Color.Red;     <span class="c">// color del texto</span>
+this.BackColor = Color.LightBlue; <span class="c">// color de la ventana</span></code></pre>
+<div class="tip warn">⚠️ <b>Nómbralos bien:</b> usa prefijos como <code>btnGuardar</code>, <code>txtNombre</code>, <code>lblTotal</code>. Así sabrás qué es cada cosa. Cambia la propiedad <b>(Name)</b> en el panel Propiedades.</div>
+</section>
+
+<section id="eventos">
+<h2><span>5</span>Eventos: el corazón de WinForms</h2>
+<p>Tu programa <b>espera</b> a que el usuario haga algo. Cuando ocurre, ejecuta el método asociado.</p>
+<div class="grid">
+<div class="mini"><b>Click</b><br>Al hacer clic.</div>
+<div class="mini"><b>TextChanged</b><br>Cuando cambia el texto.</div>
+<div class="mini"><b>KeyPress</b><br>Al presionar una tecla.</div>
+<div class="mini"><b>Load</b><br>Al abrirse el formulario.</div>
+<div class="mini"><b>MouseEnter</b><br>Cuando el mouse entra.</div>
+<div class="mini"><b>FormClosing</b><br>Antes de cerrar la ventana.</div>
+</div>
+<h3>Ejemplo: saludo personalizado</h3>
+<pre><code><span class="k">private void</span> btnSaludar_Click(<span class="k">object</span> sender, EventArgs e)
+{
+    <span class="k">string</span> nombre = txtNombre.Text;
+    MessageBox.Show(<span class="s">"Hola, "</span> + nombre + <span class="s">"!"</span>);
+}</code></pre>
+<div class="demo"><div class="bar"><span>Saludo</span><span>– □ ✕</span></div>
+<div class="body"><input id="nom" placeholder="Escribe tu nombre"><button class="btn green" onclick="var n=document.getElementById('nom').value||'amigo';document.getElementById('sal').textContent='Hola, '+n+'!'">Saludar</button><div class="out" id="sal"></div></div></div>
+<p>Para crear un evento: selecciona el control → panel Propiedades → icono del <b>rayo ⚡</b> → doble clic en el evento.</p>
+</section>
+
+<section id="datos">
+<h2><span>6</span>Variables y tipos de datos</h2>
+<p>Una <b>variable</b> es una cajita con nombre donde guardas información.</p>
+<table><tr><th>Tipo</th><th>Guarda</th><th>Ejemplo</th></tr>
+<tr><td>int</td><td>Enteros</td><td>int edad = 16;</td></tr>
+<tr><td>double</td><td>Decimales</td><td>double nota = 8.5;</td></tr>
+<tr><td>string</td><td>Texto</td><td>string nombre = "Ana";</td></tr>
+<tr><td>bool</td><td>Verdadero/falso</td><td>bool activo = true;</td></tr>
+<tr><td>char</td><td>Un carácter</td><td>char letra = 'A';</td></tr></table>
+<h3>Convertir texto a número</h3>
+<p>Los TextBox siempre devuelven <b>texto</b>. Para calcular debes convertirlo:</p>
+<pre><code><span class="k">int</span> a = <span class="k">int</span>.Parse(txtA.Text);
+<span class="k">double</span> b = <span class="k">double</span>.Parse(txtB.Text);
+lblResultado.Text = (a + b).ToString();</code></pre>
+<div class="tip">✅ Más seguro: <code>int.TryParse(txtA.Text, out int a)</code> devuelve <code>false</code> en vez de fallar si el usuario escribe letras.</div>
+<h3>Operadores</h3>
+<p><code>+ - * /</code> aritméticos · <code>%</code> residuo · <code>== != &lt; &gt; &lt;= &gt;=</code> comparación · <code>&amp;&amp; || !</code> lógicos (Y, O, NO).</p>
+</section>
+
+<section id="control">
+<h2><span>7</span>Decisiones y repeticiones</h2>
+<h3>if / else</h3>
+<pre><code><span class="k">int</span> nota = <span class="k">int</span>.Parse(txtNota.Text);
+<span class="k">if</span> (nota &gt;= 6)
+    lblEstado.Text = <span class="s">"Aprobado 🎉"</span>;
+<span class="k">else</span>
+    lblEstado.Text = <span class="s">"Reprobado"</span>;</code></pre>
+<h3>switch</h3>
+<pre><code><span class="k">switch</span> (cmbDia.SelectedItem.ToString())
+{
+    <span class="k">case</span> <span class="s">"Sábado"</span>: <span class="k">case</span> <span class="s">"Domingo"</span>:
+        lblInfo.Text = <span class="s">"Fin de semana"</span>; <span class="k">break</span>;
+    <span class="k">default</span>:
+        lblInfo.Text = <span class="s">"Día de clases"</span>; <span class="k">break</span>;
+}</code></pre>
+<h3>for y while</h3>
+<pre><code><span class="k">for</span> (<span class="k">int</span> i = 1; i &lt;= 10; i++)
+    lstTabla.Items.Add(<span class="s">"5 x "</span> + i + <span class="s">" = "</span> + (5 * i));
+
+<span class="k">int</span> n = 0;
+<span class="k">while</span> (n &lt; 3) { n++; }</code></pre>
+<h3>Métodos propios</h3>
+<pre><code><span class="k">private int</span> Sumar(<span class="k">int</span> x, <span class="k">int</span> y)
+{
+    <span class="k">return</span> x + y;
+}</code></pre>
+<h3>Listas</h3>
+<pre><code>List&lt;<span class="k">string</span>&gt; amigos = <span class="k">new</span> List&lt;<span class="k">string</span>&gt;();
+amigos.Add(<span class="s">"Luis"</span>);
+<span class="k">foreach</span> (<span class="k">var</span> a <span class="k">in</span> amigos)
+    lstAmigos.Items.Add(a);</code></pre>
+</section>
+
+<section id="proyecto">
+<h2><span>8</span>Proyecto guiado: Calculadora simple</h2>
+<p><b>Diseño:</b> 2 TextBox (<code>txtA</code>, <code>txtB</code>), 1 ComboBox (<code>cmbOp</code> con +, -, *, /), 1 Button (<code>btnCalcular</code>) y 1 Label (<code>lblResultado</code>).</p>
+<pre><code><span class="k">private void</span> btnCalcular_Click(<span class="k">object</span> sender, EventArgs e)
+{
+    <span class="k">if</span> (!<span class="k">double</span>.TryParse(txtA.Text, <span class="k">out double</span> a) ||
+        !<span class="k">double</span>.TryParse(txtB.Text, <span class="k">out double</span> b))
+    {
+        MessageBox.Show(<span class="s">"Escribe solo números"</span>);
+        <span class="k">return</span>;
+    }
+    <span class="k">double</span> r = 0;
+    <span class="k">switch</span> (cmbOp.Text)
+    {
+        <span class="k">case</span> <span class="s">"+"</span>: r = a + b; <span class="k">break</span>;
+        <span class="k">case</span> <span class="s">"-"</span>: r = a - b; <span class="k">break</span>;
+        <span class="k">case</span> <span class="s">"*"</span>: r = a * b; <span class="k">break</span>;
+        <span class="k">case</span> <span class="s">"/"</span>:
+            <span class="k">if</span> (b == 0) { MessageBox.Show(<span class="s">"No se divide entre 0"</span>); <span class="k">return</span>; }
+            r = a / b; <span class="k">break</span>;
+    }
+    lblResultado.Text = <span class="s">"Resultado: "</span> + r;
+}</code></pre>
+<div class="demo"><div class="bar"><span>Calculadora</span><span>– □ ✕</span></div>
+<div class="body"><input id="ca" type="number" placeholder="A"><select id="co"><option>+</option><option>-</option><option>*</option><option>/</option></select><input id="cb" type="number" placeholder="B"><button class="btn" onclick="calc()">Calcular</button><div class="out" id="cr"></div></div></div>
+<h3>Retos para practicar</h3>
+<details><summary>⭐ Nivel fácil: convertidor de °C a °F</summary>Fórmula: <code>F = C * 9 / 5 + 32</code>. Usa un TextBox, un Button y un Label.</details>
+<details><summary>⭐⭐ Nivel medio: lista de tareas</summary>TextBox para escribir, botón "Agregar" que usa <code>lstTareas.Items.Add()</code> y botón "Borrar" con <code>lstTareas.Items.Remove()</code>.</details>
+<details><summary>⭐⭐⭐ Nivel avanzado: adivinar el número</summary>Usa <code>new Random().Next(1,101)</code> y guarda el número secreto en una variable de la clase. Da pistas "mayor" o "menor".</details>
+</section>
+
+<section id="errores">
+<h2><span>9</span>Errores comunes y buenas prácticas</h2>
+<div class="grid">
+<div class="mini"><b>FormatException</b><br>Convertiste texto no numérico. Usa <code>TryParse</code>.</div>
+<div class="mini"><b>NullReferenceException</b><br>Usas algo vacío (ej. ComboBox sin selección). Revisa si es <code>null</code>.</div>
+<div class="mini"><b>DivideByZeroException</b><br>Dividiste entre 0. Valida antes.</div>
+<div class="mini"><b>El botón no hace nada</b><br>Borraste el evento enlazado. Vuelve a crearlo con el rayo ⚡.</div>
+</div>
+<h3>Manejo de errores con try/catch</h3>
+<pre><code><span class="k">try</span>
+{
+    <span class="k">int</span> x = <span class="k">int</span>.Parse(txtNum.Text);
+}
+<span class="k">catch</span> (FormatException)
+{
+    MessageBox.Show(<span class="s">"Número inválido"</span>);
+}</code></pre>
+<h3>Buenas prácticas</h3>
+<ul>
+<li>Nombres claros para controles y variables.</li>
+<li>Comenta tu código con <code>// explicación</code>.</li>
+<li>Valida siempre lo que escribe el usuario.</li>
+<li>Prueba tu programa con datos raros (vacío, letras, negativos).</li>
+<li>Guarda tu proyecto seguido (Ctrl+S) y usa Git para versiones.</li>
+</ul>
+<h3>¿Qué sigue?</h3>
+<p>Aprende programación orientada a objetos (clases), manejo de archivos, bases de datos con SQL Server o SQLite, y conoce otras tecnologías como WPF, ASP.NET y MAUI.</p>
+</section>
+
+<section id="quiz">
+<h2><span>10</span>Mini quiz</h2>
+<p>Elige la respuesta correcta:</p>
+<div id="qz"></div>
+<div class="out" id="qres"></div>
+</section>
+</main>
+<footer>✨ Hecho para aprender programando · Windows Forms + C# ✨</footer>
+<script>
+function calc(){var a=parseFloat(document.getElementById('ca').value),b=parseFloat(document.getElementById('cb').value),o=document.getElementById('co').value,r=document.getElementById('cr');
+if(isNaN(a)||isNaN(b)){r.textContent='Escribe solo números';return}
+if(o==='/'&&b===0){r.textContent='No se divide entre 0';return}
+r.textContent='Resultado: '+(o==='+'?a+b:o==='-'?a-b:o==='*'?a*b:a/b)}
+var Q=[["¿Qué propiedad cambia el texto de un botón?",["Text","Color","Name"],0],["¿Qué tecla ejecuta el programa en Visual Studio?",["F4","F5","F7"],1],["¿Qué es un evento?",["Un error","Algo que ocurre, como un clic","Un tipo de dato"],1],["¿Cómo conviertes texto a entero?",["int.Parse()","texto.Num()","Convert.Text()"],0]],ok=0,done=0;
+var box=document.getElementById('qz');
+Q.forEach(function(q,i){var d=document.createElement('div');d.className='mini';d.style.margin='8px 0';d.innerHTML='<b>'+(i+1)+'. '+q[0]+'</b><br>';
+q[1].forEach(function(t,j){var b=document.createElement('button');b.className='btn';b.style.cssText='margin:4px;padding:6px 14px;font-size:.85rem';b.textContent=t;
+b.onclick=function(){if(d.dataset.d)return;d.dataset.d=1;done++;if(j===q[2]){ok++;b.className='btn green'}else{b.style.opacity='.6'}
+document.getElementById('qres').textContent='Puntaje: '+ok+' / '+Q.length+(done===Q.length?(ok===Q.length?' 🏆 ¡Perfecto!':' · ¡Sigue practicando!'):'')};d.appendChild(b)});box.appendChild(d)});
+</script>
+</body>
+</html>
